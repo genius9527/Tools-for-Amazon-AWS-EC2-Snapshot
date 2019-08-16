@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>AWS EC2 WORK</title>
+    <script src="https://sdk.amazonaws.com/js/aws-sdk-2.45.0.min.js"></script>
+</head>
+<body>
+    <label id="texttishi">«Î ‰»ÎøÏ’’µƒ√Ë ˆ:</label>
+    <input type="text" value="" id="textId">
+    <button id="create-button">create</button>
+    <br />
+    <p>
+
+        <label id="snapshotid">snapshot id:</label>
+    </p>
+    <br />
+    <p>
+
+        <label id="snapshotid1"></label>
+    </p>
+    <br />
+    <p>
+
+        <label id="miaoshu">Description:</label>
+    </p>
+    <br />
+    <p>
+
+        <label id="miaoshu1"></label>
+    </p>
+    <br />
+    <p>
+        <label id="State">State:</label>
+    </p>
+    <br/>
+    <p>
+        <label id="State1"></label>
+    </p>
+    </br>
+    <p>
+        <label id="StartTime">StartTime:</label>
+    </p>
+    </br>
+    <p>
+        <label id="StartTime1"></label>
+    </p>
+    </br>
+    <p>
+        <label id="progress">Progress:</label>
+    </p>
+    </br>
+    <p>
+        <label id="progress1"></label>
+    </p>
+    <script type="text/javascript">
+        var key = "**********";//use your key
+        var secret = "**************";//use your secret
+        AWS.config.update({ accessKeyId: key, secretAccessKey: secret });
+        AWS.config.region = "*******";//use your region
+        var ec2 = new AWS.EC2({ apiVersion: '2016-11-15' });
+        /// <reference types="aws-sdk" />
+        var m = document.getElementById("textId");
+        var button = document.getElementById('create-button');
+        var snapshotid1 = document.getElementById('snapshotid1');
+        var miaoshu1 = document.getElementById('miaoshu1');
+        var State1 = document.getElementById('State1');
+        var StartTime1 = document.getElementById('StartTime1');
+        var progress1 = document.getElementById('progress1');
+        var h = " ";
+		button.addEventListener('click', function () {
+		    var params = {
+		        Description: m.value, 
+		        VolumeId: "*************"//use your VolumeId
+		    };
+   
+		    ec2.createSnapshot(params, function (err, data) {
+		        if (err) console.log(err, err.stack); // an error occurred
+		        else {
+		            console.log(data);
+		            h = data.SnapshotId;
+		            snapshotid1.innerHTML = data.SnapshotId;
+		            miaoshu1.innerHTML = data.Description;
+		            StartTime1.innerHTML = data.StartTime;
+
+		            setInterval(function () {
+		                var params = {
+		                    SnapshotIds: [
+                                  h
+		                    ]
+		                };
+		                ec2.describeSnapshots(params, function (err, data) {
+		                    if (err) console.log(err, err.stack); // an error occurred
+		                    else {
+
+		                        State1.innerHTML = data.Snapshots[0].State;
+		                        progress1.innerHTML = data.Snapshots[0].Progress;
+		                    }
+		                });
+		            }, 3);
+		        }
+
+		    });
+		}, false);
+    </script>
+</body>
+</html>
+
+
