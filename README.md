@@ -1,5 +1,6 @@
 # Tools-for-Amazon-AWS-EC2-Snapshot
 A tool for creating  Snapshot of EC2 using aws sdk for Javascript
+
 **工具功能**：
 1.创建EC2指定卷的快照，并可自定义快照描述
 2.前台动态显示快照信息及快照创建进度
